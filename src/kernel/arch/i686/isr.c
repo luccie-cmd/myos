@@ -2,7 +2,6 @@
 #include "idt.h"
 #include "gdt.h"
 #include "io.h"
-#include "syscall/syscall.h"
 #include <stdio.h>
 #include <stddef.h>
 #include <debug.h>
@@ -61,9 +60,6 @@ void __attribute__((cdecl)) i686_ISR_Handler(Registers* regs)
 {
     if (g_ISRHandlers[regs->interrupt] != NULL)
         g_ISRHandlers[regs->interrupt](regs);
-    
-    else if (regs->interrupt == 0x80)
-        SyscallHandler(regs);
 
     else if (regs->interrupt >= 32)
         printf(MODULE " Unhandled interrupt %d!", regs->interrupt);
