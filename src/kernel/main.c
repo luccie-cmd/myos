@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include "stdio.h"
-#include "memory.h"
 #include <hal/hal.h>
 #include <arch/i686/irq.h>
 #include <debug.h>

@@ -155,7 +155,6 @@ def unmount_fs(mount_dir: str):
     subprocess.run(['fusermount', '-u', mount_dir], check=True)
 
 def build_disk(image, stage1, stage2, kernel, files, env):
-    print("Calculating sizes")
     size_sectors = (env['imageSize'] + SECTOR_SIZE - 1) // SECTOR_SIZE
     file_system = env['imageFS']
     partition_offset = 2048
@@ -164,7 +163,6 @@ def build_disk(image, stage1, stage2, kernel, files, env):
     stage2_size = os.stat(stage2).st_size
     stage2_sectors = (stage2_size + SECTOR_SIZE - 1) // SECTOR_SIZE
 
-    print("Generating image");
     generate_image_file(image, size_sectors)
 
     # create partition table
