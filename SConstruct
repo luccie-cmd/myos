@@ -63,9 +63,11 @@ HOST_ENVIRONMENT.Append(
 if HOST_ENVIRONMENT['config'] == 'debug':
     print("Building for debug")
     HOST_ENVIRONMENT.Append(CCFLAGS = ['-O0'])
+    HOST_ENVIRONMENT.Append(CCFLAGS = ['-DDEBUG'])
 else:
     print("Building for release")
     HOST_ENVIRONMENT.Append(CCFLAGS = ['-O3'])
+    HOST_ENVIRONMENT.Append(CCFLAGS = ['-DRELEASE'])
 
 if HOST_ENVIRONMENT['imageType'] == 'floppy':
     HOST_ENVIRONMENT['imageFS'] = 'fat12'

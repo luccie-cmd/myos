@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <hal/vfs.h>
+#include <stdarg.h>
 
 void fputc(char c, fd_t file);
 void fputs(const char* str, fd_t file);

@@ -19,7 +19,7 @@ esac
 # b *0x7c00
 # layout asm
 cat > .vscode/.gdb_script.gdb << EOF
-    symbol-file $PWD/build/i686_debug/kernel/kernel.elf
+    symbol-file $PWD/build/i686_release/kernel/kernel.elf
     set disassembly-flavor intel
     target remote | qemu-system-i386 $QEMU_ARGS
 EOF

@@ -199,8 +199,7 @@ def build_disk(image, stage1, stage2, kernel, files, env):
         # make the default files and folders
         print(f"> making default files and folders...")
         os.makedirs(os.path.join(tempdir, "bin"))
-        os.makedirs(os.path.join(tempdir, "usr"))
-        os.makedirs(os.path.join(tempdir, "usr/bin"))
+        os.makedirs(os.path.join(tempdir, "bin/kernel_apps"))
 
         # copy rest of files
         src_root = env['BASEDIR']

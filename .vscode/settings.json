@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "x86.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stdint.h": "c",
+        "stdint-gcc.h": "c"
     }
 }

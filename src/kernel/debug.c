@@ -7,7 +7,7 @@ static const char* const g_LogSeverityColors[] =
     [LVL_INFO]         = "\033[37m",
     [LVL_WARN]         = "\033[1;33m",
     [LVL_ERROR]        = "\033[1;31m",
-    [LVL_CRITICAL]     = "\033[1;37;41m",
+    [LVL_CRITICAL]     = "\033[1;31m",
 };
 
 static const char* const g_ColorReset = "\033[0m";

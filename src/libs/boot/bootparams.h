@@ -6,8 +6,9 @@ typedef struct {
     uint64_t Begin, Length;
     uint32_t Type;
     uint32_t ACPI;
-    // For memory allocator
-    uint32_t pid;
+    // Memory allocator
+    uint32_t UsedLength;
+    pid_t pid;
 } MemoryRegion;
 
 typedef struct  {

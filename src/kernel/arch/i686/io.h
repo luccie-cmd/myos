@@ -15,6 +15,7 @@ uint8_t __attribute__((cdecl)) i686_inb(uint16_t port);
 uint8_t __attribute__((cdecl)) i686_EnableInterrupts();
 uint8_t __attribute__((cdecl)) i686_DisableInterrupts();
 
+void __attribute__((cdecl)) i686_GetCurrentRegisters(Registers* regs);
 void i686_iowait();
 void i686_kernel_panic(const char* MODULE, Registers* regs);
 void __attribute__((cdecl)) i686_Panic();
