@@ -385,6 +385,9 @@ if os.name != "nt":
         os.system(f"{command}")
 
     if __name__ == '__main__':
+        if len(sys.argv) > 1:
+            if sys.argv[1] == 'toolchain':
+                runShFile("./scripts/setup_toolchain.sh")
         CONFIG['BASEDIR'] = 'image'
         build_files("src/bootloader/stage1", "out", asm_args=["-DFILESYSTEM=fat32", '-felf', '-g'])
         build_files("src/bootloader/stage2", "out", ['-ffreestanding', '-nostdlib', '-O3', '-std=c11', '-Werror', '-Isrc/bootloader/stage2', '-Isrc/libs', '-Isrc/libs/core'], ['-felf', '-g'])
@@ -396,6 +399,4 @@ if os.name != "nt":
         build_image(["out/stage1.bin", "out/stage2.bin", "out/kernel.elf"], CONFIG)
         if len(sys.argv) > 1:
             if sys.argv[1] == 'run':
-                runShFile("./scripts/run.sh", ["disk", "./out/image.img"])
-            elif sys.argv[1] == 'toolchain':
-                runShFile("./scripts/setup_toolchain.sh")
+                runShFile("./scripts/run.sh", ["disk", "out/image.img"])

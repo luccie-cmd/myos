@@ -37,3 +37,22 @@ def IsFileName(obj, name):
     elif isinstance(obj, File) or isinstance(obj, Dir) or isinstance(obj, Entry):
         return obj.name == name
     return False
+
+def ParseSize(size: str):
+    size_match = re.match(r'([0-9\.]+)([kmg]?)', size, re.IGNORECASE)
+    if size_match is None:
+        raise ValueError(f'Error: Invalid size {size}')
+    result = Decimal(size_match.group(1))
+    multiplier = size_match.group(2).lower()
+    if multiplier == 'k':
+        result *= 1024
+    if multiplier == 'm':
+        result *= 1024 ** 2
+    if multiplier == 'g':
+        result *= 1024 ** 3
+    return int(result)
+
+def RemoveSuffix(str, suffix):
+    if str.endswith(suffix):
+        return str[:-len(suffix)]
+    return str

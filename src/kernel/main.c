@@ -33,8 +33,7 @@ void start(BootParams* bootParams)
             bootParams->Memory.Regions[i].Type);
     }
 
-    printf("LUCCIE OS v0.1\n");
-    printf("This operating system is under construction.\n");
+    printf("Aurora OS v0.1\n");
 
     Process_t *terminal = NewProcess("/bin/kernel_apps/terminal.elf");
     StartProcess(terminal);
