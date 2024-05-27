@@ -136,6 +136,7 @@ if os.name != "nt":
     def link_files(files_path: str, out_path: str, linker_file: str=""):
         print(f"Linking all the files in {files_path}")
         files = glob.glob(files_path + '/**', recursive=True)
+        os.system(f"mkdir -p {os.path.dirname(out_path)}")
         # Loop through each file
         command: str = f"{CONFIG['toolchain']}/i686-elf/bin/i686-elf-gcc -nostdlib"
         for file_path in files:
@@ -345,6 +346,13 @@ if os.name != "nt":
             print(f"> making default files and folders...")
             os.makedirs(os.path.join(tempdir, "bin"))
             os.makedirs(os.path.join(tempdir, "bin/kernel_apps"))
+            print(f"> Copying applications")
+            app_files = glob.glob("./out/apps/**", recursive=True)
+            for file in app_files:
+                if not check_file_extension(file, 'elf'):
+                    continue
+                print(f"Copying {os.path.basename(file)}")
+                copy2(file, os.path.join(tempdir, f"bin/kernel_apps/{os.path.basename(file)}"))
 
             # copy rest of files
             src_root = env['BASEDIR']
@@ -389,13 +397,15 @@ if os.name != "nt":
             if sys.argv[1] == 'toolchain':
                 runShFile("./scripts/setup_toolchain.sh")
         CONFIG['BASEDIR'] = 'image'
-        build_files("src/bootloader/stage1", "out", asm_args=["-DFILESYSTEM=fat32", '-felf', '-g'])
-        build_files("src/bootloader/stage2", "out", ['-ffreestanding', '-nostdlib', '-O3', '-std=c11', '-Werror', '-Isrc/bootloader/stage2', '-Isrc/libs', '-Isrc/libs/core'], ['-felf', '-g'])
-        build_files("src/kernel", "out", ['-ffreestanding', '-nostdlib', '-O3', '-std=c11', '-Werror', '-Isrc/kernel', '-Isrc/libs', '-Isrc/libs/core'], ['-felf', '-g', '-Isrc/kernel'])
-        build_files("src/libs", "out", ['-ffreestanding', '-nostdlib', '-O3', '-std=c11', '-Werror', '-Isrc/kernel', '-Isrc/libs', '-Isrc/libs/core'], ['-felf', '-g', '-Isrc/kernel'], ['-ffreestanding', '-nostdlib', '-fno-exceptions', '-fno-rtti', '-O3', '-std=c++20', '-Werror', '-Isrc/libs', '-Isrc/libs/core'])
+        build_files("src/bootloader/stage1", "out", asm_args=["-DFILESYSTEM=fat32", '-felf32', '-g'])
+        build_files("src/bootloader/stage2", "out", ['-ffreestanding', '-nostdlib', '-O3', '-std=c11', '-Werror', '-Isrc/bootloader/stage2', '-Isrc/libs', '-Isrc/libs/core'], ['-felf32', '-g'])
+        build_files("src/kernel", "out", ['-ffreestanding', '-nostdlib', '-O3', '-std=c11', '-Werror', '-Isrc/kernel', '-Isrc/libs', '-Isrc/libs/core'], ['-felf32', '-g', '-Isrc/kernel'])
+        build_files("src/libs", "out", ['-ffreestanding', '-nostdlib', '-O3', '-std=c11', '-Werror', '-Isrc/kernel', '-Isrc/libs', '-Isrc/libs/core'], ['-felf32', '-g', '-Isrc/kernel'], ['-ffreestanding', '-nostdlib', '-fno-exceptions', '-fno-rtti', '-O3', '-std=c++20', '-Werror', '-Isrc/libs', '-Isrc/libs/core'])
+        build_files("src/apps/terminal", "out", asm_args=['-felf32', '-g', '-Isrc/apps/terminal'])
         link_files("out/objects/src/bootloader/stage1", "out/stage1.bin", "./src/bootloader/stage1/linker.ld")
         link_files("out/objects/src/bootloader/stage2", "out/stage2.bin", "./src/bootloader/stage2/linker.ld")
         link_files("out/objects/src/kernel", "out/kernel.elf", "./src/kernel/linker.ld")
+        link_files("out/objects/src/apps/terminal", "out/apps/terminal.elf", "./src/apps/terminal/linker.ld")
         build_image(["out/stage1.bin", "out/stage2.bin", "out/kernel.elf"], CONFIG)
         if len(sys.argv) > 1:
             if sys.argv[1] == 'run':
