@@ -19,3 +19,9 @@ void debugc(char c);
 void debugs(const char* str);
 void debugf(const char* fmt, ...);
 void debug_buffer(const char* msg, const void* buffer, uint32_t count);
+
+typedef struct{
+    fd_t fd;
+    uint8_t* buffer;
+    uint32_t buffer_length, buffer_pos, length, pos, mode;
+} FILE;

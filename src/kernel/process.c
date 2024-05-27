@@ -3,6 +3,8 @@
 #include "syscall.h"
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
+#include "elf.h"
 
 Process_t* NewProcess(const char* exePath){
     pid_t pid = fork();
@@ -14,14 +16,27 @@ Process_t* NewProcess(const char* exePath){
     
     proc->exe_path = exePath;
     proc->pid = pid;
+    // Allocate memory for the process (e.g., 64 KB for simplicity)
+    proc->memory_size = 64 * 1024;
+    proc->memory = (uint8_t *)MMAllocate(pid, proc->memory_size);
+    if (proc->memory == NULL) {
+        return NULL; // Error: failed to allocate memory
+    }
+
+    // Initialize the memory to zero
+    memset(proc->memory, 0, proc->memory_size);
     return proc;
 }
 
-// @param regs is primaraly used for argc, argv, envp, ... but also for reseting the registers after they return from the process 
-// since at execution time all the registers are saved into process->old_regs, process->regs is given to switchUserMode and
-// after it's done executing it'll return to it's old registers
-void StartProcess(Process_t* process){
-    printf("TODO: Start a process!\n");
+int StartProcess(Process_t* process){
+    if (process == NULL) {
+        return -1; // Error: invalid arguments
+    }
+
+    
+
+    // Executable loading successful
+    return 0;
 }
 
 void DeleteProcess(Process_t* process){

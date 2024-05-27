@@ -5,8 +5,10 @@
 typedef struct {
     pid_t pid;
     const char* exe_path;
+    uint64_t memory_size;
+    uint8_t* memory;
 } Process_t;
 
 Process_t* NewProcess(const char* exePath);
-void StartProcess(Process_t* process);
+int StartProcess(Process_t* process);
 void DeleteProcess(Process_t* process);
